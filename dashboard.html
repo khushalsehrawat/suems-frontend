@@ -248,10 +248,14 @@
     /* ========================== CONSTANTS & SAFE HELPERS ========================== */
     
     /* THIS WHEN WE RUN ON LOCAL */
-    const BASE = 'http://localhost:8080';
+    //const BASE = 'http://localhost:8080';
 
     /* tHIS WHEN RUN ON RENDER OR ANY WEBSITE BASED */
     //const BASE = 'http://backend:8080';
+
+//for RENDER site
+     const BASE_URL = "https://suems-backend.onrender.com";
+
     const token = localStorage.getItem('token');
     if(!token){ location.href = 'login.html'; }
 
