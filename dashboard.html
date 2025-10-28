@@ -348,13 +348,13 @@ const configModal = new bootstrap.Modal(document.getElementById('configModal'));
 
         // Save cost (ignore errors to avoid blocking UI)
         try{
-          await fetch(`${BASE}/api/user-energy/set-cost?unitCost=${cost}`, {method:'POST', headers: authHeaders()});
+          await fetch(`${BASE_URL}/api/user-energy/set-cost?unitCost=${cost}`, {method:'POST', headers: authHeaders()});
           unitCostCache = cost;
         }catch(e){ console.warn('set-cost failed:', e); }
 
         // Update simulator interval if backend supports it
         try{
-          await fetch(`${BASE}/api/simulator/interval?ms=${ms}`, {method:'PUT', headers: authHeaders()});
+          await fetch(`${BASE_URL}/api/simulator/interval?ms=${ms}`, {method:'PUT', headers: authHeaders()});
         }catch(e){ console.warn('interval set failed:', e); }
 
         updateSelectedMeta(selectedType, ms);
@@ -403,7 +403,7 @@ function tsArrayToDate(arr){
     /* ========================== DATA LOADERS (safe) ========================== */
     async function loadUnitCost(){
       try{
-        const r = await fetch(`${BASE}/api/user-energy/get-cost`, { headers: authHeaders() });
+        const r = await fetch(`${BASE_URL}/api/user-energy/get-cost`, { headers: authHeaders() });
         const txt = await r.text();
         const num = Number(txt);
         unitCostCache = isNaN(num) ? 0 : num;
@@ -412,7 +412,7 @@ function tsArrayToDate(arr){
 
     async function loadSummaryCards(){
       try{
-        const r = await fetch(`${BASE}/api/user-energy/average?range=day`, { headers: authHeaders() });
+        const r = await fetch(`${BASE_URL}/api/user-energy/average?range=day`, { headers: authHeaders() });
         const s = await r.json();
         if(CountUpCtor){
           cuEnergy = cuEnergy || new CountUpCtor('statEnergy', 0, {decimalPlaces:2});
@@ -478,7 +478,7 @@ async function loadSeries() {
   let raw = []; // ✅ Declare at top to avoid "before initialization"
 
   try {
-    const response = await fetch(`${BASE}/api/sensors/recent`, { headers: authHeaders() });
+    const response = await fetch(`${BASE_URL}/api/sensors/recent`, { headers: authHeaders() });
 
     if (!response.ok) {
       console.error("Backend error:", response.status);
@@ -726,7 +726,7 @@ async function simulateLiveSensorData() {
   };
 
   try {
-    const res = await fetch(`${BASE}/api/sensors/saveWithCost`, {
+    const res = await fetch(`${BASE_URL}/api/sensors/saveWithCost`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
